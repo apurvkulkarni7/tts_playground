@@ -1,17 +1,24 @@
 import streamlit as st
-from models import TTSModel
+import sys
+from utils.data import available_models, AppFlags
+#, click_button, get_button_state, toggle_button_state
+from utils.streamlit_utils import app_model_inference, app_model_selection, checkbox_grid, app_input, click_button, get_button_state
 
-# Streamlit App
-st.title("TTS Playground")
+st.cache_data.clear()
 
-st.sidebar.header("Select TTS Model")
-model_name = st.sidebar.selectbox("Model", ["mozilla_tts_de", "mozilla_tts_en"])
-tts_model = TTSModel(model_name=model_name)
+# Define default falgs
+app_flags = AppFlags()
 
-st.header("Text-to-Speech Converter")
-text_input = st.text_area("Enter Text", "Hello, this is a TTS test.")
+# Title
+st.title("Text-to-Speech Converter")
 
-if st.button("Convert"):
-    with st.spinner("Generating speech..."):
-        audio = tts_model.convert(text_input)
-        st.audio(audio, format='audio/wav')
+state = False
+state = app_model_selection()
+
+state = False
+state,input_text = app_input()   
+
+# if st.button("Generate"):
+if state:
+    model_list = st.session_state['model_list']
+    app_model_inference(model_list,input_text)

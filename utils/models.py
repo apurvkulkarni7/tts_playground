@@ -37,7 +37,7 @@ class TTSModel:
                 )
     
     def convert(self,text):
-        sound_file="./tmp.wav"
+        sound_file=f"./{self.model_name}.wav"
         if "mozilla_tts" in self.model_name:
             self.model.tts_to_file(text,file_path=sound_file)
         return sound_file
