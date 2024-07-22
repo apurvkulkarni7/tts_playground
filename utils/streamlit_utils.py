@@ -1,8 +1,7 @@
 from io import StringIO
 import streamlit as st
 import sys
-from models import TTSModel
-
+from utils.models import TTSModel
 from utils.data import available_models
 
 def click_button(button_name):
