@@ -40,41 +40,44 @@ def checkbox_grid(items, header="Multi grid checkbox", cols=3):
 
 def app_model_selection():
     state = False
-    model_list_dict = available_models()
+    lang_model_list_dict, all_model_list_dict = available_models()
 
     # Extract unique languages for the dropdown
-    languages = sorted(set(model_list_dict.keys()))
+    languages = sorted(set(lang_model_list_dict.keys()))
     languages.insert(0, 'all')  # Add an 'All' option for no filtering
     languages.insert(0, 'none')  # Add an 'none' option
 
     # Create a dropdown for selecting language
     st.header("Select TTS Model")
-    selected_language = st.selectbox('Select Language', languages,label_visibility="visible")
+    selected_language = st.selectbox('Select Language', languages, label_visibility="visible")
 
     if st.session_state["selected_language"] == "":
         st.session_state["button_model"] = False
 
-    # Flatten the list
-    model_list_selected = [ model_i for models in model_list_dict.values() for model_i in models ]
-
     # Model selection
     model_selection_text = "Available TTS models"
     if selected_language == "all":
-        model_list = checkbox_grid(header=model_selection_text, items=model_list_selected, cols=4)
+        all_model_list = [ model_i for models in lang_model_list_dict.values() for model_i in models ]
+        all_model_list = list(set(all_model_list))
+        all_model_list.sort()
+        model_list = checkbox_grid(header=model_selection_text, items=all_model_list, cols=4)
     elif selected_language == "none":
         st.write("Please select appropriate option above.")
         model_list=[]
     else:
-        model_list = checkbox_grid(header=model_selection_text, items=model_list_dict[selected_language], cols=4)
-        
+        model_list = checkbox_grid(header=model_selection_text, items=list(lang_model_list_dict[selected_language].keys()), cols=4)
+    
     if len(model_list) == 0:
         st.error('No model selected. Please Select a model.', icon=":material/error:")
-        
-    if st.button("Confirm model selection"):
-        st.session_state["button_model"] = True
-        st.session_state['selected_language'] = selected_language
-        st.session_state['model_list'] = model_list
-        state = True
+
+    # Get model information from selcted models
+    models = {key: all_model_list_dict[key] for key in model_list}
+
+    # if st.button("Confirm model selection"):
+    st.session_state["button_model"] = True
+    st.session_state['selected_language'] = selected_language
+    st.session_state['models'] = models
+    state = True
     
     if st.session_state['selected_language'] != "":
         st.write("Selected models")
@@ -117,13 +120,14 @@ def app_input():
         else:
             return False, text_input
 
-def app_model_inference(model_list, text_input):
+def app_model_inference(models, text_input):
     
     # Define columns and rows in the results
-    num_items = len(model_list)
+    num_items = len(models)
     num_cols=2
     num_rows=(num_items+1) // num_cols
 
+    model_list = list(models)
     with st.spinner("Generating speech..."):
         st.header("Results")
         for row_i in range(num_rows):
@@ -137,8 +141,8 @@ def app_model_inference(model_list, text_input):
                         continue
                     st.write(model_i)
                     
-                    if "mozilla_tts" in model_i:
-                        tts_model = TTSModel(model_name=model_i)
-                        audio = tts_model.convert(text_input)
+                    #if "mozilla_tts" in model_i:
+                    tts_model = TTSModel(models[model_i])
+                    audio = tts_model.convert(text_input)
                     
                     st.audio(audio, format='audio/wav')

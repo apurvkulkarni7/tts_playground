@@ -20,5 +20,6 @@ state,input_text = app_input()
 
 # if st.button("Generate"):
 if state:
-    model_list = st.session_state['model_list']
-    app_model_inference(model_list,input_text)
+    models = st.session_state['models']
+    print(models)
+    app_model_inference(models,input_text)
