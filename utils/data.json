@@ -1,0 +1,52 @@
+{
+    "xttsV2":{
+        "path": "tts_models/multilingual/multi-dataset/xtts_v2",
+        "name": "xttsV2",
+        "lang": ["de", "en"],
+        "speaker": "Ana Florence",
+        "vocoder":"vocoder_models/en/ljspeech/hifigan_v2",
+        "provider":"coqui"
+    },
+    
+    
+
+    "vctkVits":{
+        "path": "tts_models/en/vctk/vits",
+        "name": "vctkVits",
+        "lang": "en",
+        "speaker": "p234",
+        "vocoder":"vocoder_models/en/ljspeech/hifigan_v2",
+        "provider":"coqui"
+    },
+    "ljspeechGlowtts":{
+        "path": "tts_models/en/ljspeech/glow-tts",
+        "name": "ljspeechGlowtts",
+        "lang": "en",
+        "vocoder":"vocoder_models/en/ljspeech/hifigan_v2",
+        "provider":"coqui"
+    },
+    "ljspeechFastPitch":{
+        "path": "tts_models/en/ljspeech/fast_pitch",
+        "name": "ljspeechFastPitch",
+        "lang": "en",
+        "vocoder":"vocoder_models/en/ljspeech/hifigan_v2",
+        "provider":"coqui"
+    },
+    
+    
+    
+    "thorstenVits":{
+        "path": "tts_models/de/thorsten/vits",
+        "name": "thorstenVits",
+        "lang": "de",
+        "vocoder":"vocoder_models/de/thorsten/hifigan_v1",
+        "provider":"coqui"
+    },
+    "fairseqVits":{
+        "path": "tts_models/deu/fairseq/vits",
+        "name": "de_fairseqVits",
+        "lang": "de",
+        "vocoder":"vocoder_models/de/thorsten/hifigan_v1",
+        "provider":"coqui"
+    }
+}
