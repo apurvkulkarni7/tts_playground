@@ -1,6 +1,6 @@
 import streamlit as st
 import sys
-from utils.data import available_models, AppFlags
+from utils.data import AppFlags
 #, click_button, get_button_state, toggle_button_state
 from utils.streamlit_utils import app_model_inference, app_model_selection, checkbox_grid, app_input, click_button, get_button_state
 
@@ -21,5 +21,4 @@ state,input_text = app_input()
 # if st.button("Generate"):
 if state:
     models = st.session_state['models']
-    print(models)
     app_model_inference(models,input_text)
